@@ -128,8 +128,8 @@ void loop() {
     {
       if (lineSensorValues[2]>TOLERANCE && lineSensorValues[0]>TOLERANCE)//line in center
       {
-        motors.setSpeeds(-LEFT_MOTOR_SPEED, -RIGHT_MOTOR_SPEED);//reverse
-        delay(300);  
+        motors.setSpeeds(-LEFT_MOTOR_SPEED, RIGHT_MOTOR_SPEED);//turn around
+        delay(800);  
       }
       else if (lineSensorValues[0]>TOLERANCE)//line on left most sensor
       {
