@@ -3,9 +3,12 @@
 This project makes the Zumo search a white corridor with black walls for objects (representing people.)
 
 This is achieved using 3 modes:
-Mode 1: Manual Control, wherein the user sends commands via a USB cable using the ManualGUI.pde file to move the Zumo.
-Mode 2: Semi-autonomous Control. In this mode, the Zumo moves forwards on its own until it senses an object, at which point it will output "Command" to the LCD screen attached to the Zumo and await the user to input a command manually using the GUI.
-Mode 3: Autonomous Control. In this mode, the Zumo will traverse the corridors scanning for objects without user intervention.
+
+* Mode 1: Manual Control, wherein the user sends commands via a USB cable using the ManualGUI.pde file to move the Zumo.
+
+* Mode 2: Semi-autonomous Control. In this mode, the Zumo moves forwards on its own until it senses an object, at which point it will output "Command" to the LCD screen attached to the Zumo and await the user to input a command manually using the GUI.
+
+* Mode 3: Autonomous Control. In this mode, the Zumo will traverse the corridors scanning for objects without user intervention.
 
 In any mode the LCD screen will display "Person l" or "Person r" when an object is detected to the left or right respectively.
 
