@@ -8,7 +8,7 @@ Zumo32U4LCD lcd;
 Zumo32U4Motors motors;
 Zumo32U4LineSensors lineSensors;
 Zumo32U4ProximitySensors proxSensors;
-const uint16_t LINE_SENSOR_TOLERANCE = 200;//50 worked in 93.. keep adjusting this
+const uint16_t LINE_SENSOR_TOLERANCE = 150;//50 worked in 93.. keep adjusting this
 const uint16_t FRONT_PROX_SENSOR_TOLERANCE = 5;
 const uint16_t SIDE_PROX_SENSOR_TOLERANCE = 5;
 const uint8_t NUM_LINE_SENSORS = 3;
@@ -146,7 +146,7 @@ void modeTwo()
 {
   calibrateSensors();
   boolean stop = false;
-  motors.setSpeeds(LEFT_MOTOR_SPEED, RIGHT_MOTOR_SPEED);\
+  motors.setSpeeds(LEFT_MOTOR_SPEED, RIGHT_MOTOR_SPEED);
   while (!stop)
   {
     lineSensors.readLine(lineSensorValues);
@@ -161,7 +161,7 @@ void modeTwo()
       personFoundCooldown -= 1;
 
     if (leftValue >= SIDE_PROX_SENSOR_TOLERANCE && personFoundCooldown == 0)//object to the left
-    {//TODO: MAKE LIST THAT ADDS EACH TURN TO IT
+    {
       motors.setSpeeds(0,0);
       lcd.println("Person left");
       delay(300);
@@ -188,91 +188,52 @@ void modeTwo()
 
 void modeTwoUserInput()
 {
-  if (Serial.available())
-  {
     lcd.print("Command needed");
-    char val = Serial.read();
     boolean toggled = false;
     boolean stop = false;
 
     while (!stop)
     {
-      if (Serial.available()) {
+      if (Serial.available())
+      {
 
-      char val = Serial.read();
+        char val = Serial.read();
 
-      if (val == 'w')
-      {
-        stop = true;    
-        if (toggled == false)
+        if (val == 'w')
         {
-          toggled = true;
-          motors.setSpeeds(LEFT_MOTOR_SPEED, RIGHT_MOTOR_SPEED);
+          stop = true;    
+            motors.setSpeeds(LEFT_MOTOR_SPEED, RIGHT_MOTOR_SPEED);
         }
-        else
+        else if (val == 's')
         {
-          toggled = false;
-          motors.setSpeeds(0, 0);
+          stop=true;    
+            motors.setSpeeds(-LEFT_MOTOR_SPEED, -RIGHT_MOTOR_SPEED);
         }
-      }
-      else if (val == 's')
-      {
-        stop=true;    
-        if (toggled == false)
+        else if (val == 'a')
         {
-          toggled = true;
-          motors.setSpeeds(-LEFT_MOTOR_SPEED, -RIGHT_MOTOR_SPEED);
+          stop=true;    
+            motors.setSpeeds(-LEFT_MOTOR_SPEED, RIGHT_MOTOR_SPEED);
         }
-        else
+        else if (val == 'd')
         {
-          toggled = false;
-          motors.setSpeeds(0, 0);
+          stop=true;  
+            motors.setSpeeds(LEFT_MOTOR_SPEED, -RIGHT_MOTOR_SPEED);
+        }
+        else if (val == 'x')
+        {
+            stop=true;
+            motors.setSpeeds(0, 0);
         }
       }
-      else if (val == 'a')
-      {
-        stop=true;    
-        if (toggled == false)
-        {
-          toggled = true;
-          motors.setSpeeds(-LEFT_MOTOR_SPEED, RIGHT_MOTOR_SPEED);
-        }
-        else
-        {
-          toggled = false;
-          motors.setSpeeds(0, 0);
-        }
-      }
-      else if (val == 'd')
-      {
-        stop=true;    
-        if (toggled == false)
-        {
-          toggled = true;
-          motors.setSpeeds(LEFT_MOTOR_SPEED, -RIGHT_MOTOR_SPEED);
-        }
-        else
-        {
-          toggled = false;
-          motors.setSpeeds(0, 0);
-        }
-      }
-      else if (val == 'x')
-      {
-          stop=true;
-          motors.setSpeeds(0, 0);
-      }
-    }
     }
     lcd.clear();
-}
 }
 
 void modeThree()
 {
   calibrateSensors();
   boolean stop = false;
-  while (!stop)//stopping doesnt work
+  while (!stop)
   {
     lineSensors.readLine(lineSensorValues);
     proxSensors.read();
@@ -288,7 +249,7 @@ void modeThree()
       motors.setSpeeds(-LEFT_MOTOR_SPEED, RIGHT_MOTOR_SPEED);
       delay(500);      
     }
-    else if (leftValue >= SIDE_PROX_SENSOR_TOLERANCE && personFoundCooldown == 0)//object to the left
+    if (leftValue >= SIDE_PROX_SENSOR_TOLERANCE && personFoundCooldown == 0)//object to the left
     {//TODO: MAKE LIST THAT ADDS EACH TURN TO IT
       motors.setSpeeds(0,0);
       lcd.println("Person left");
