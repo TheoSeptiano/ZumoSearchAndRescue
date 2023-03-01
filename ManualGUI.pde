@@ -15,7 +15,7 @@ ControlP5 ui;
 
 void setup()
 {
-  size(600,450);
+  size(600,550);
   
   if (largerUI)
 {
@@ -32,17 +32,17 @@ else//M2 needs fixing in smallUI mode
   
   ui = new ControlP5(this);
   
-  ui.addButton("Forward").setPosition(buttonWidth, buttonHeight).setSize(buttonWidth, buttonHeight);//buttons position relative to their size, this maintains ui scale
-  ui.addButton("Back").setPosition(buttonWidth, (2*buttonHeight)+4).setSize(buttonWidth, buttonHeight);
-  ui.addButton("Stop").setPosition((buttonWidth/2)-4, (3*buttonHeight)+8).setSize((buttonWidth*2)+8, (buttonHeight/2));
-  ui.addButton("Left").setPosition((buttonWidth/2)-4, buttonHeight).setSize(buttonWidth/2, (2*buttonHeight)+4);//plus 4 for white gap
-  ui.addButton("Right").setPosition((2*buttonWidth)+4, buttonHeight).setSize(buttonWidth/2, (2*buttonHeight)+4);
-  ui.addButton("M1").setPosition((buttonWidth/2)-4, 8).setSize((buttonWidth/2)+34, buttonHeight-12);
-  ui.addButton("M2").setPosition((buttonWidth+34), 8).setSize((buttonWidth/2)+34, buttonHeight-12);
-  ui.addButton("M3").setPosition((buttonWidth*2)-28, 8).setSize((buttonWidth/2)+32, buttonHeight-12);
+  ui.addButton("Forward").setPosition(buttonWidth, buttonHeight).setSize(buttonWidth, buttonHeight).setFont(createFont("arial", 20));//buttons position relative to their size, this maintains ui scale
+  ui.addButton("Back").setPosition(buttonWidth, (2*buttonHeight)+4).setSize(buttonWidth, buttonHeight).setFont(createFont("arial", 20));
+  ui.addButton("Stop").setPosition((buttonWidth/2)-4, (3.5*buttonHeight)+8).setSize((buttonWidth*2)+8, (buttonHeight/2)).setFont(createFont("arial", 20));
+  ui.addButton("Left").setPosition((buttonWidth/2)-4, buttonHeight).setSize(buttonWidth/2, (2*buttonHeight)+4).setFont(createFont("arial", 20));//plus 4 for white gap
+  ui.addButton("Right").setPosition((2*buttonWidth)+4, buttonHeight).setSize(buttonWidth/2, (2*buttonHeight)+4).setFont(createFont("arial", 20));
+  ui.addButton("M1").setPosition((buttonWidth/2)-4, 412).setSize((buttonWidth/2)+34, buttonHeight-12).setFont(createFont("arial", 20));
+  ui.addButton("M2").setPosition((buttonWidth+34), 412).setSize((buttonWidth/2)+34, buttonHeight-12).setFont(createFont("arial", 20));
+  ui.addButton("M3").setPosition((buttonWidth*2)-28, 412).setSize((buttonWidth/2)+32, buttonHeight-12).setFont(createFont("arial", 20));
   
   serialReaderLabel = ui.addTextlabel("serialReaderLabel")
-    .setPosition(94, buttonHeight*3.62)
+    .setPosition(94, buttonHeight*3.2)
       .setSize(408, buttonHeight/2)
         .setColorValue(0)
           .setFont(createFont("arial", 20))
