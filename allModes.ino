@@ -2,13 +2,12 @@
 
 Zumo32U4ButtonA buttonA;
 Zumo32U4ButtonB buttonB;
-//Zumo32U4ButtonC buttonC;
 Zumo32U4Buzzer buzzer;
 Zumo32U4LCD lcd;
 Zumo32U4Motors motors;
 Zumo32U4LineSensors lineSensors;
 Zumo32U4ProximitySensors proxSensors;
-const uint16_t LINE_SENSOR_TOLERANCE = 150;//50 worked in 93.. keep adjusting this
+const uint16_t LINE_SENSOR_TOLERANCE = 150;//50 worked in 9331, but 150 seems to be most consistent
 const uint16_t FRONT_PROX_SENSOR_TOLERANCE = 5;
 const uint16_t SIDE_PROX_SENSOR_TOLERANCE = 5;
 const uint8_t NUM_LINE_SENSORS = 3;
@@ -19,7 +18,7 @@ bool buttonAPressed = false;
 uint16_t leftFrontValue, rightFrontValue, leftValue, rightValue;
 uint8_t personFoundCooldown = 0;
 
-void calibrateSensors()
+void calibrateSensors()//taken from the Pololu Zumo examples
 {
   lcd.clear();
 
@@ -64,7 +63,7 @@ void modeOne()//manual
 
     if (leftValue >= SIDE_PROX_SENSOR_TOLERANCE && personFoundCooldown == 0)//object to the left
     {
-      lcd.println("Person left");
+      lcd.print("Person left");//prints to the LCD screen when a person has been found
       delay(500);
       lcd.clear();
       personFoundCooldown = 50;
@@ -81,7 +80,7 @@ void modeOne()//manual
 
     char val = Serial.read();
 
-    if (val == 'w')
+    if (val == 'w')//the processing gui sends characters to be read and used here
     {    
       if (toggled == false)
       {
@@ -142,7 +141,7 @@ void modeOne()//manual
 }
 }
 
-void modeTwo()
+void modeTwo()//semi-autonomous
 {
   calibrateSensors();
   boolean stop = false;
@@ -178,15 +177,10 @@ void modeTwo()
       modeTwoUserInput();
       personFoundCooldown = 50;
     }
-    // else if (lineSensorValues[2]>LINE_SENSOR_TOLERANCE && lineSensorValues[0]>LINE_SENSOR_TOLERANCE)//line in center
-    // {
-    //   modeTwoUserInput();
-    // }
-
   }
 }
 
-void modeTwoUserInput()
+void modeTwoUserInput()//mode two switches to mode 1-esque user input, but only allows one command before going back to autonomous mode
 {
     lcd.print("Command needed");
     boolean toggled = false;
@@ -229,20 +223,20 @@ void modeTwoUserInput()
     lcd.clear();
 }
 
-void modeThree()
+void modeThree()//autonomous
 {
   calibrateSensors();
   boolean stop = false;
   while (!stop)
   {
-    lineSensors.readLine(lineSensorValues);
+    lineSensors.readLine(lineSensorValues);//This section reads the sensor (line and proximity values)
     proxSensors.read();
     leftFrontValue = proxSensors.countsFrontWithLeftLeds();
     rightFrontValue = proxSensors.countsFrontWithRightLeds();
     leftValue = proxSensors.countsLeftWithLeftLeds();
     rightValue = proxSensors.countsRightWithRightLeds();
     
-    if (personFoundCooldown > 0)
+    if (personFoundCooldown > 0)//personFoundCooldown was added as a condition for seeing a person to prevent the Zumo from endlessly 'finding' the same pereson
       personFoundCooldown -= 1;
 
     if (leftFrontValue >= FRONT_PROX_SENSOR_TOLERANCE || rightFrontValue >= FRONT_PROX_SENSOR_TOLERANCE) {//object in front
@@ -250,7 +244,7 @@ void modeThree()
       delay(500);      
     }
     if (leftValue >= SIDE_PROX_SENSOR_TOLERANCE && personFoundCooldown == 0)//object to the left
-    {//TODO: MAKE LIST THAT ADDS EACH TURN TO IT
+    {
       motors.setSpeeds(0,0);
       lcd.println("Person left");
       delay(300);
@@ -325,7 +319,7 @@ void modeThree()
     if(Serial.available())
     {
       char val = Serial.read();      
-      if (val == 'x')
+      if (val == 'x')//when x is read, the mode stops
       {
         stop=true;
       }
